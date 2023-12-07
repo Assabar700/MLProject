@@ -20,3 +20,5 @@ Il implémente divers modèles d'apprentissage automatique pour classer "Leaf Cl
 Le fichier "workspace" interagit avec "Load" pour obtenir les données divisées, puis compile les résultats de chaque classifieur enregistrant les métriques telles que l'accuracy, la précision, le recall, et le F1 score. 
 Le fichier "plot" stocke les courbes d'apprentissage. 
 Le fichier "projet" tire parti de ces résultats pour afficher graphiquement les métriques sous forme de graphiques en barres et les courbes d'apprentissage pour chaque classifieur. 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
