@@ -4,7 +4,7 @@ Ceci est le dépôt du projet final du cours IFT712
 
 Il implémente divers modèles d'apprentissage automatique pour classer "Leaf Classification" de Kaggle à l'aide de sklearn :
 
-1️⃣ AdaBoost
+1️⃣ AdaBoost<br/>
 2️⃣ Bagging
 3️⃣ Decision Tree
 4️⃣ KNN
