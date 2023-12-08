@@ -20,9 +20,9 @@ Il implémente divers modèles d'apprentissage automatique pour classer "Leaf Cl
 ![Diagramme Implementation](https://github.com/Assabar700/MLProject/assets/104478195/42f36577-fe4b-42d5-a985-3de817edacf7)
 
 
-Le fichier "workspace" interagit avec "Load" pour obtenir les données divisées, puis compile les résultats de chaque classifieur enregistrant les métriques telles que l'accuracy, la précision, le recall, et le F1 score. <br/>
-Le fichier "plot" stocke les courbes d'apprentissage. <br/>
-Le fichier "projet" tire parti de ces résultats pour afficher graphiquement les métriques sous forme de graphiques en barres et les courbes d'apprentissage pour chaque classifieur. <br/>
+- Le fichier "workspace" interagit avec "Load" pour obtenir les données divisées, puis compile les résultats de chaque classifieur enregistrant les métriques telles que l'accuracy, la précision, le recall, et le F1 score. <br/>
+- Le fichier "plot" stocke les courbes d'apprentissage. <br/>
+- Le fichier "projet" tire parti de ces résultats pour afficher graphiquement les métriques sous forme de graphiques en barres et les courbes d'apprentissage pour chaque classifieur. <br/>
 
 
 ## Auteurs
@@ -30,6 +30,3 @@ Le fichier "projet" tire parti de ces résultats pour afficher graphiquement les
 * BELLARI Nada
 * ASSABAR Taoufik
 * PERREAU Diane
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
