@@ -11,13 +11,13 @@ class LDAWithRegularization:
         self.n_jobs = n_jobs
         self.scoring = scoring
         self.lda = LinearDiscriminantAnalysis()
-        self.accuracy_train = None  # Store training accuracy
-        self.accuracy_test = None  # Store test accuracy
+        self.accuracy_train = None  # train accuracy
+        self.accuracy_test = None  # test accuracy
 
-        # Define the grid of parameters for LDA with regularization
+        # Définir la grille de paramètres pour LDA avec régularisation
         self.lda_param_grid = {
             'solver': ['lsqr'],
-            'shrinkage': ['auto', 0.1, 0.5, 0.9],  # Regularization parameter
+            'shrinkage': ['auto', 0.1, 0.5, 0.9],  
         }
 
     def find_best_num_folds(self, X, y, cv_range):
@@ -42,23 +42,23 @@ class LDAWithRegularization:
             best_num_folds = self.find_best_num_folds_default(X_train, y_train)
             cv = best_num_folds
 
-        # Apply feature scaling (standardization) on training data
+        # Appliquer la mise à l'échelle des fonctionnalités (normalisation) sur les données d'entraînement
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
 
-        # Grid search for LDA on training data
+        # Grid search pour LDA train data
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X_train_scaled, y_train)
         best_lda = lda_grid_search.best_estimator_
 
-        # Use the pipeline for cross-validation on training data
+        # Utilisez le pipeline pour la validation croisée des données d'entraînement
         scores_train = cross_val_score(best_lda, X_train_scaled, y_train, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         self.accuracy_train = scores_train.mean()
 
-        # Apply the same feature scaling on test data
+        # Appliquer la même mise à l'échelle des fonctionnalités sur les données de test
         X_test_scaled = scaler.transform(X_test)
 
-        # Evaluate the model on test data
+        # Evaluer le model avec test data
         self.accuracy_test = accuracy_score(y_test, best_lda.predict(X_test_scaled))
 
     def get_accuracy_train(self):
@@ -82,11 +82,11 @@ class LDAWithRegularization:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les résultats moyens de la formation et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajoutez des régions ombrées pour la variabilité des résultats de formation et de test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -102,7 +102,7 @@ class LDAWithRegularization:
         if num_folds is None:
             num_folds = self.find_best_num_folds_default(X, y)
 
-        # Grid search for LDA
+        # Grid search pour LDA
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X, y)
         best_lda = lda_grid_search.best_estimator_
@@ -111,14 +111,16 @@ class LDAWithRegularization:
 
     def predict(self, X):
         return self.lda.predict(X)
+
+class LDAWithCrossValidationPCA:
     def __init__(self, n_jobs=-1, scoring="accuracy"):
         self.n_jobs = n_jobs
         self.scoring = scoring
         self.lda = LinearDiscriminantAnalysis()
-        self.accuracy_train = None  # Store training accuracy
-        self.accuracy_test = None  # Store test accuracy
+        self.accuracy_train = None  # training accuracy
+        self.accuracy_test = None  # test accuracy
 
-        # Define the grid of parameters for LDA with regularization
+        # Définir la grille de paramètres pour LDA avec régularisation
         self.lda_param_grid = {
             'solver': ['lsqr'],
             'shrinkage': ['auto', 0.1, 0.5, 0.9],  # Regularization parameter
@@ -146,23 +148,23 @@ class LDAWithRegularization:
             best_num_folds = self.find_best_num_folds_default(X_train, y_train)
             cv = best_num_folds
 
-        # Apply feature scaling (standardization) on training data
+        # Appliquer la mise à l'échelle des fonctionnalités (normalisation) sur les données d'entraînement
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
 
-        # Grid search for LDA on training data
+        # Grid search pour LDA training data
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X_train_scaled, y_train)
         best_lda = lda_grid_search.best_estimator_
 
-        # Use the pipeline for cross-validation on training data
+        # Utilisez le pipeline pour la validation croisée des données d'entraînement
         scores_train = cross_val_score(best_lda, X_train_scaled, y_train, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         self.accuracy_train = scores_train.mean()
 
-        # Apply the same feature scaling on test data
+        # Appliquer la même mise à l'échelle des fonctionnalités sur les données de test
         X_test_scaled = scaler.transform(X_test)
 
-        # Evaluate the model on test data
+        # Evaluer le model pour test data
         self.accuracy_test = accuracy_score(y_test, best_lda.predict(X_test_scaled))
 
     def get_accuracy_train(self):
@@ -186,11 +188,11 @@ class LDAWithRegularization:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les résultats moyens de la formation et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajoutez des régions ombrées pour la variabilité des résultats de formation et de test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -206,7 +208,7 @@ class LDAWithRegularization:
         if num_folds is None:
             num_folds = self.find_best_num_folds_default(X, y)
 
-        # Grid search for LDA
+        # Grid search pour LDA
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X, y)
         best_lda = lda_grid_search.best_estimator_
@@ -223,13 +225,13 @@ class LDAWithCrossValidationPCA:
         self.lda = LinearDiscriminantAnalysis()
         self.accuracy = None  # Store accuracy
 
-        # Define the grid of parameters for LDA
+        # Définir la grille de paramètres pour LDA
         self.lda_param_grid = {
             'solver': ['lsqr'],
             'shrinkage': ['auto', 0.5, 1.0],
         }
 
-        # Add PCA components as a range
+        # Ajouter des composants PCA sous forme de plage
         self.pca_components_range = [10, 20, 30, 40, 50]
 
     def find_best_num_folds(self, X, y, cv_range):
@@ -254,10 +256,10 @@ class LDAWithCrossValidationPCA:
             pca = PCA(n_components=n_components)
             X_pca = pca.fit_transform(X)
 
-            # Find the best number of folds
+            # Trouver le meilleur nombre de plis
             best_num_folds = self.find_best_num_folds(X_pca, y, cv_range=[3, 5, 7])
 
-            # Grid search for LDA
+            # Grid search pour LDA
             lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=best_num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
             lda_grid_search.fit(X_pca, y)
             accuracy = lda_grid_search.best_score_
@@ -269,23 +271,23 @@ class LDAWithCrossValidationPCA:
         return best_components, best_num_folds
 
     def fit(self, X, y):
-        # Find the best number of PCA components
+        # Trouver le meilleur nombre de composants PCA
         best_components, best_num_folds = self.find_best_pca_components(X, y)
 
-        # Apply PCA with the best number of components
+        # Appliquer PCA avec le meilleur nombre de composants
         pca = PCA(n_components=best_components)
         X_pca = pca.fit_transform(X)
 
-        # Grid search for LDA
+        # Grid search pour LDA
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=best_num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X_pca, y)
         best_lda = lda_grid_search.best_estimator_
 
-        # Use the pipeline for cross-validation
+        # Utiliser le pipeline pour la validation croisée
         scores = cross_val_score(best_lda, X_pca, y, cv=best_num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         self.accuracy = scores.mean()
 
-        # Fit the model on the full data
+        # Ajuster le modèle sur les données complètes
         best_lda.fit(X_pca, y)
 
         
@@ -307,11 +309,11 @@ class LDAWithCrossValidationPCA:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les résultats moyens de la formation et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajoutez des régions ombrées pour la variabilité des résultats de formation et de test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -324,11 +326,11 @@ class LDAWithCrossValidationPCA:
         plt.grid()
 
     def grid_search(self, X, y, n_components=None):
-        # Apply PCA with the specified number of components
+        # Appliquer PCA avec le nombre spécifié de composants
         pca = PCA(n_components=n_components)
         X_pca = pca.fit_transform(X)
 
-        # Grid search for LDA
+        # Grid search pour LDA
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=best_num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         lda_grid_search.fit(X_pca, y)
         best_lda = lda_grid_search.best_estimator_
@@ -343,7 +345,7 @@ class LDAWithForwardSelectionAndGridSearch:
         self.n_jobs = n_jobs
         self.scoring = scoring
         self.lda = LinearDiscriminantAnalysis()
-        self.scaler = StandardScaler()  # Add StandardScaler
+        self.scaler = StandardScaler() 
         self.accuracy = None
         self.lda_param_grid = {
             'solver': ['lsqr'],
@@ -372,7 +374,7 @@ class LDAWithForwardSelectionAndGridSearch:
         for num_features in range(1, max_features + 1):
             X_selected = X[:, :num_features]
             
-            # Apply the same feature scaling as during training
+            # Appliquer la même mise à l'échelle des fonctionnalités que pendant la formation
             X_selected_scaled = self.scaler.transform(X_selected)
 
             self.lda.fit(X_selected_scaled, y)
@@ -414,11 +416,11 @@ class LDAWithForwardSelectionAndGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les résultats moyens de la formation et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajoutez des régions ombrées pour la variabilité des résultats de formation et de test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -436,7 +438,7 @@ class LDAWithForwardSelectionAndGridSearch:
         else:
             best_num_folds = num_folds
 
-        self.scaler.fit(X)  # Fit the scaler on the entire training set
+        self.scaler.fit(X) 
         X_scaled = self.scaler.transform(X)
 
         lda_grid_search = GridSearchCV(self.lda, self.lda_param_grid, cv=best_num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
@@ -446,7 +448,7 @@ class LDAWithForwardSelectionAndGridSearch:
         return best_lda, lda_grid_search.best_params_, lda_grid_search.best_score_
 
     def predict(self, X):
-        # Apply the same feature scaling as during training
+        # Appliquer la même mise à l'échelle des fonctionnalités que pendant la formation
         X_scaled = self.scaler.transform(X)
         return self.lda.predict(X_scaled)
 
