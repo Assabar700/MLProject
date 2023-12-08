@@ -45,7 +45,7 @@ class KNNWithCrossValidationGridSearch:
             num_folds = self.find_best_num_folds(X, y, self.cv_range)
         X_scaled = self.scaler.fit_transform(X)
         
-        # Fit the model on the entire training set to get the training accuracy
+        # Ajustez le modèle sur l'ensemble de l'entraînement pour obtenir la précision de l'entraînement
         self.knn.fit(X_scaled, y)
         self.train_accuracy = self.knn.score(X_scaled, y)
 
@@ -288,13 +288,13 @@ class KNNWithForwardSelection:
             # Utiliser les 'num_features' premières colonnes comme caractéristiques
             X_selected = X[:, :num_features]
 
-            # Apply StandardScaler to the selected features
+            # Appliquer StandardScaler aux fonctionnalités sélectionnées
             X_selected_scaled = self.scaler.fit_transform(X_selected)
 
-            # Fit the KNN model
+            # Adaptez le modèle KNN
             self.knn.fit(X_selected_scaled, y)
 
-            # Perform cross-validation
+            # Performmer cross-validation
             scores = cross_val_score(self.knn, X_selected_scaled, y, cv=5, n_jobs=self.n_jobs, scoring=self.scoring)
             accuracy = scores.mean()
 
@@ -312,10 +312,10 @@ class KNNWithForwardSelection:
         # Forward selection
         X_selected, self.best_num_features, best_accuracy = self.forward_selection(X, y, X.shape[1])
 
-        # Apply StandardScaler to the selected features
+        # Appliquer StandardScaler aux fonctionnalités sélectionnées
         X_selected_scaled = self.scaler.fit_transform(X_selected)
 
-        # Fit the KNN model
+        # Adaptez le modèle KNN
         self.knn.fit(X_selected_scaled, y)
         self.accuracy = best_accuracy  # Store test accuracy
         self.precision = cross_val_score(
@@ -386,17 +386,17 @@ class KNNWithForwardSelection:
         if num_folds is None:
             num_folds = self.find_best_num_folds(X, y, self.cv_range)
 
-        # Apply StandardScaler to the entire dataset
+        # Appliquer StandardScaler à l'ensemble de données
         X_scaled = self.scaler.fit_transform(X)
 
-        # Grid search for KNN
+        # Adaptez le modèle KNN
         knn_grid_search = GridSearchCV(
             self.knn, self.knn_param_grid, cv=num_folds, n_jobs=self.n_jobs, scoring=self.scoring
         )
         knn_grid_search.fit(X_scaled, y)
         best_knn = knn_grid_search.best_estimator_
 
-        # Store the best instance of KNN
+        # Stockez la meilleure instance de KNN
         self.knn = best_knn
 
         return best_knn, knn_grid_search.best_params_, knn_grid_search.best_score_
