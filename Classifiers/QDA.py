@@ -14,9 +14,9 @@ class QDABaggingWithCrossValidationGridSearch:
         self.qda = QuadraticDiscriminantAnalysis()
         self.accuracy = None  # Store accuracy
 
-        # Define parameter grid for grid search
+        # Définir la grille de paramètres pour la recherche de grille
         self.param_grid = {
-            'reg_param': [0.0, 0.1, 0.2],  # Customize the list according to your needs
+            'reg_param': [0.0, 0.1, 0.2],  
         }
 
     def find_best_num_folds(self, X, y):
@@ -25,7 +25,7 @@ class QDABaggingWithCrossValidationGridSearch:
         return best_num_folds
 
     def fit(self, X, y, cv=None):
-        # Define best_num_folds here if cv is not provided
+        # Définir best_num_folds ici si cv n'est pas fourni
         if cv is None:
             cv = self.find_best_num_folds(X, y)
 
@@ -37,7 +37,7 @@ class QDABaggingWithCrossValidationGridSearch:
         return self.accuracy
 
     def plot_learning_curve(self, X, y, train_sizes, cv=None):
-        # Use best_num_folds if cv is not provided
+        # Utiliser best_num_folds si cv n'est pas fourni
         if cv is None:
             cv = self.find_best_num_folds(X, y)
 
@@ -53,11 +53,11 @@ class QDABaggingWithCrossValidationGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -70,7 +70,7 @@ class QDABaggingWithCrossValidationGridSearch:
         plt.grid()
 
     def grid_search(self, X, y):
-        skf = StratifiedKFold(n_splits=5, shuffle=True)  # Use StratifiedKFold for grid search
+        skf = StratifiedKFold(n_splits=5, shuffle=True) 
         grid_search = GridSearchCV(self.qda, self.param_grid, cv=skf, n_jobs=self.n_jobs, scoring=self.scoring)
         grid_search.fit(X, y)
         self.qda = grid_search.best_estimator_
@@ -85,12 +85,12 @@ class PCAandQDABaggingWithCrossValidationGridSearch:
         self.qda = QuadraticDiscriminantAnalysis()
         self.accuracy = None  # Store accuracy
 
-        # Define parameter grid for PCA
+        # Définir la grille de paramètres pour l'ACP
         self.pca_param_grid = {
             'n_components': [10, 20, 30, 40, 60],  # Customize the list according to your needs
         }
 
-        # Define parameter grid for QDA
+        # Définir la grille de paramètres pour QDA
         self.qda_param_grid = {
             'reg_param': [0.0, 0.1, 0.2],  # Customize the list according to your needs
         }
@@ -101,11 +101,11 @@ class PCAandQDABaggingWithCrossValidationGridSearch:
         return best_num_folds
 
     def fit(self, X, y, cv=None):
-        # Perform PCA and transform data
+        # Effectuer une ACP et transformer les données
         self.pca.fit(X)
         X_pca = self.pca.transform(X)
 
-        # Use best_num_folds if cv is not provided
+        # Utiliser best_num_folds si cv n'est pas fourni
         if cv is None:
             cv = self.find_best_num_folds(X, y)
 
@@ -117,7 +117,7 @@ class PCAandQDABaggingWithCrossValidationGridSearch:
         return self.accuracy
 
     def plot_learning_curve(self, X, y, train_sizes, cv=None):
-        # Use best_num_folds if cv is not provided
+        # Utiliser best_num_folds si cv n'est pas fourni
         if cv is None:
             cv = self.find_best_num_folds(X, y)
 
@@ -133,11 +133,11 @@ class PCAandQDABaggingWithCrossValidationGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -150,19 +150,19 @@ class PCAandQDABaggingWithCrossValidationGridSearch:
         plt.grid()
 
     def grid_search(self, X, y, num_folds=None):
-        # Use the provided number of folds or find the best number of folds
+        # Utilisez le nombre de plis fourni ou trouvez le meilleur nombre de plis.
         if num_folds is None:
             num_folds = self.find_best_num_folds(X, y)
 
-        # Grid search for PCA
+        # Recherche de grille pour l'ACP
         pca_grid_search = GridSearchCV(self.pca, self.pca_param_grid, cv=num_folds, n_jobs=self.n_jobs, scoring=self.scoring)
         pca_grid_search.fit(X, y)
         best_pca = pca_grid_search.best_estimator_
 
-        # Apply PCA transformation
+        # Appliquer la transformation ACP
         X_pca = best_pca.transform(X)
 
-        # Grid search for QDA
+        # Grid search pour QDA
         skf = StratifiedKFold(n_splits=num_folds, shuffle=True, random_state=42)
         qda_grid_search = GridSearchCV(self.qda, self.qda_param_grid, cv=skf, n_jobs=self.n_jobs, scoring=self.scoring)
         qda_grid_search.fit(X_pca, y)
@@ -179,9 +179,9 @@ class ForwardSelectionQDA:
         self.best_accuracy = None
         self.best_num_features = None
  
-        # Define parameter grid for QDA
+        # Definire parametre grid pour QDA
         self.qda_param_grid = {
-            'reg_param': [0.0, 0.1, 0.2],  # Customize the list according to your needs
+            'reg_param': [0.0, 0.1, 0.2],  
         }
  
     def find_best_num_folds(self, X, y):
@@ -196,13 +196,13 @@ class ForwardSelectionQDA:
         best_X_selected = X[:, :1]
  
         for num_features in range(1, max_features + 1):
-            # Use the 'num_features' first columns as features
+            # Utiliser les premières colonnes de 'num_features' comme caractéristiques
             X_selected = X[:, :num_features]
  
-            # Adjust the QDA model
+            # Ajuster le modèle QDA
             self.qda.fit(X_selected, y)
  
-            # Perform cross-validation
+            # Effectuer une validation croisée
             skf = StratifiedKFold(n_splits=5, shuffle=True)
             scores = cross_val_score(self.qda, X_selected, y, cv=skf, n_jobs=self.n_jobs, scoring=self.scoring)
             accuracy = scores.mean()
@@ -215,10 +215,10 @@ class ForwardSelectionQDA:
         return best_X_selected, best_num_features, best_accuracy
  
     def fit(self, X, y):
-        # Determine the best number of features to use
+        # Déterminer le meilleur nombre de caractéristiques à utiliser
         X_selected, best_num_features, best_accuracy = self.forward_selection(X, y, X.shape[1])
  
-        # Adjust the QDA model with the best number of features
+        # Ajuster le modèle QDA avec le meilleur nombre de caractéristiques
         self.qda.fit(X_selected, y)
         self.best_num_features = best_num_features
         self.best_accuracy = best_accuracy
@@ -230,11 +230,11 @@ class ForwardSelectionQDA:
         return self.best_num_features
  
     def plot_learning_curve(self, X, y, train_sizes, cv=None, save_path=None):
-        # Use best_num_folds if cv is not provided
+        # Utiliser best_num_folds si cv n'est pas fourni
         if cv is None:
             cv = self.find_best_num_folds(X, y)
 
-        # Ensure that cv is not greater than the number of samples in the smallest class
+        # S'assurer que cv n'est pas supérieur au nombre d'échantillons de la plus petite classe
         cv = min(cv, min(np.bincount(y)))
 
         skf = StratifiedKFold(n_splits=cv, shuffle=True)
@@ -249,11 +249,11 @@ class ForwardSelectionQDA:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -266,7 +266,7 @@ class ForwardSelectionQDA:
         plt.grid()
  
     def grid_search(self, X, y):
-        # Grid search for QDA
+        # Grid search pour QDA
         skf = StratifiedKFold(n_splits=5, shuffle=True)
         grid_search = GridSearchCV(self.qda, self.qda_param_grid, cv=skf, n_jobs=self.n_jobs, scoring=self.scoring)
         grid_search.fit(X, y)
