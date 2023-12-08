@@ -43,17 +43,17 @@ class RandomForestWithCrossValidationGridSearch:
             best_num_folds = self.find_best_num_folds(X, y, cv_range=[3, 5])  
             cv = best_num_folds
 
-        # Define the base RandomForestClassifier without specific hyperparameters
+        # Définir le RandomForestClassifier de base sans hyperparamètres spécifiques
         base_rf = RandomForestClassifier()
 
-        # Perform grid search to find the best hyperparameters
+        # Effectuer une recherche sur grille pour trouver les meilleurs hyperparamètres
         grid_search = GridSearchCV(base_rf, self.param_grid, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         grid_search.fit(X, y)
 
-        # Use the best hyperparameters for the RandomForestClassifier
+        # Utiliser les meilleurs hyperparamètres pour le RandomForestClassifier
         self.rf = grid_search.best_estimator_
 
-        # Calculate accuracy using the best hyperparameters
+        # Calculer la précision en utilisant les meilleurs hyperparamètres
         scores = cross_val_score(self.rf, X, y, cv=cv, n_jobs=self.n_jobs, scoring=self.scoring)
         self.accuracy = np.mean(scores)
 
@@ -77,7 +77,7 @@ class RandomForestWithCrossValidationGridSearch:
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats d'entrainement et de test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
