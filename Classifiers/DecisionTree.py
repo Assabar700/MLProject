@@ -59,7 +59,6 @@ class DecisionTreeWithCrossValidationGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
@@ -351,7 +350,7 @@ class DecisionTreeWithForwardSelectionAndGridSearch:
                 best_test_accuracy = test_accuracy
                 best_cv = cv
 
-        return best_cv  # Return only the best cross-validation value
+        return best_cv  
 
     def fit(self, X, y, cv):
         # Déterminer le meilleur nombre de caractéristiques et le meilleur cv à utiliser
