@@ -63,11 +63,11 @@ class PerceptronCVGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -146,11 +146,11 @@ class PerceptronCVPCAWithPreprocessing:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -192,14 +192,14 @@ class PerceptronCVForwardSelectionWithPreprocessing:
         best_params = None
 
         for num_features in range(1, max_features + 1):
-            # Select the first `num_features` columns
+            # Sélectionner les premières colonnes `num_features`.
             X_selected = X[:, :num_features]
 
-            # Adjust the Perceptron model
+            # Ajuster le modèle Perceptron
             clf = Perceptron(max_iter=5000, eta0=0.1)  # Increase max_iter and try different values for eta0
             clf.fit(X_selected, y)
 
-            # Perform cross-validation
+            # Effectuer une validation croisée
             scores = cross_val_score(clf, X_selected, y, cv=self.cv_range[-1], n_jobs=self.n_jobs, scoring=self.scoring)
             accuracy = scores.mean()
 
@@ -221,7 +221,7 @@ class PerceptronCVForwardSelectionWithPreprocessing:
                 X_selected, best_num_features, _ = self.forward_selection(X, y, max_features)
                 clf = Perceptron(max_iter=5000, eta0=0.1)  # Increase max_iter and try different values for eta0
 
-                # Define a parameter grid for hyperparameter tuning
+                # Définir une grille de paramètres pour l'ajustement des hyperparamètres
                 param_grid = {
                     'alpha': self.alpha_range,
                 }
@@ -254,11 +254,11 @@ class PerceptronCVForwardSelectionWithPreprocessing:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entraînement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -286,14 +286,14 @@ class PerceptronCVForwardSelectionWithPreprocessing:
         best_params = None
 
         for num_features in range(1, max_features + 1):
-            # Select the first `num_features` columns
+            # Sélectionner les premières colonnes `num_features`.
             X_selected = X[:, :num_features]
 
-            # Adjust the Perceptron model
+            # Ajuster le modèle Perceptron
             clf = Perceptron(max_iter=5000, eta0=0.1)  # Increase max_iter and try different values for eta0
             clf.fit(X_selected, y)
 
-            # Perform cross-validation
+            # Effectuer une validation croisée
             scores = cross_val_score(clf, X_selected, y, cv=self.cv_range[-1], n_jobs=self.n_jobs, scoring=self.scoring)
             accuracy = scores.mean()
 
@@ -321,7 +321,6 @@ class PerceptronCVForwardSelectionWithPreprocessing:
                 # Debug print
                 print(f"Shape of X_selected: {X_selected.shape}")
 
-                # Define a parameter grid for hyperparameter tuning
                 param_grid = {
                     'alpha': self.alpha_range,
                 }
