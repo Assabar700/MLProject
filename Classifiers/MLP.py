@@ -45,11 +45,11 @@ class MLPClassifierCVGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entrainement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -98,11 +98,11 @@ class MLPClassifierWithPCACVGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entrainement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
@@ -164,11 +164,11 @@ class MLPClassifierCVFeatureSelection:
 
         plt.figure(figsize=(10, 6))
 
-        # Plot mean training and test scores
+        # Tracer les scores moyens de l'entrainement et du test
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
-        # Add shaded regions for the variability in training and test scores
+        # Ajouter des régions ombrées pour la variabilité des résultats de l'entraînement et du test
         plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
         plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
