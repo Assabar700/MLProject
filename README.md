@@ -17,7 +17,8 @@ Il implémente divers modèles d'apprentissage automatique pour classer "Leaf Cl
 
 ## Getting Started
 
-![screenshot](Diagramme Implementation.png)
+![Diagramme Implementation](https://github.com/Assabar700/MLProject/assets/104478195/42f36577-fe4b-42d5-a985-3de817edacf7)
+
 
 Le fichier "workspace" interagit avec "Load" pour obtenir les données divisées, puis compile les résultats de chaque classifieur enregistrant les métriques telles que l'accuracy, la précision, le recall, et le F1 score. <br/>
 Le fichier "plot" stocke les courbes d'apprentissage. <br/>
