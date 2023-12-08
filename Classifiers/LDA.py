@@ -82,7 +82,7 @@ class LDAWithRegularization:
 
         plt.figure(figsize=(10, 6))
 
-        # Tracer les résultats moyens de la formation et des tests
+        # Tracer les résultats moyens des train et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
@@ -203,7 +203,7 @@ class LDAWithCrossValidationPCA:
 
         plt.figure(figsize=(10, 6))
 
-        # Tracer les résultats moyens de la formation et des tests
+        # Tracer les résultats moyens des train et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
@@ -310,7 +310,7 @@ class LDAWithForwardSelectionAndGridSearch:
 
         plt.figure(figsize=(10, 6))
 
-        # Tracer les résultats moyens de la formation et des tests
+        # Tracer les résultats moyens des train et des tests
         plt.plot(train_sizes, train_scores_mean, label="Score d'entraînement", color="r")
         plt.plot(train_sizes, test_scores_mean, label="Score de Test", color="g")
 
